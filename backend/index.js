@@ -24,6 +24,22 @@ app.get('/contacts', async (req, res) => {
   }
 });
 
+// GET /balance/:userId - fetch user balance from Firestore
+app.get('/balance/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const userDoc = await db.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const data = userDoc.data();
+    res.json({ balance: data.balance });
+  } catch (error) {
+    console.error('Error fetching balance:', error);
+    res.status(500).json({ error: 'Failed to fetch balance' });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Backend API listening on port ${PORT}`);

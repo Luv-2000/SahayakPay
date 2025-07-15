@@ -34,4 +34,16 @@ async function addContacts() {
 addContacts().catch((err) => {
   console.error('Error adding contacts:', err);
   process.exit(1);
+});
+
+// Add demo user with balance
+async function addDemoUserBalance() {
+  const userId = 'demoUser';
+  await db.collection('users').doc(userId).set({ balance: 100000 }, { merge: true });
+  console.log('Demo user balance set to 1,00,000 rupees!');
+}
+
+addDemoUserBalance().catch((err) => {
+  console.error('Error setting demo user balance:', err);
+  process.exit(1);
 }); 
